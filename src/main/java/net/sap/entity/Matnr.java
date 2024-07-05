@@ -8,37 +8,41 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "matkl")
-public class Matkl {
+@Table(name = "matnr")
+public class Matnr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
-    
-    @Column(name = "matkl_code")
-    private String matklCode;
 
-    @Column(name = "matkl_value")
-    private String matklValue;
+    @Column(name = "matnr_code")
+    private String matnrCode;
+
+    @Column(name = "matnr_value")
+    private String matnrValue;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    public String getMatklValue() {
-        return matklValue;
+
+    public String getMatnrCode() {
+        return matnrCode;
     }
-    public void setMatklValue(String matklValue) {
-        this.matklValue = matklValue;
+
+    public void setMatnrCode(String matnrCode) {
+        this.matnrCode = matnrCode;
     }
-    public String getMatklCode() {
-        return matklCode;
+
+    public String getMatnrValue() {
+        return matnrValue;
     }
-    public void setMatklCode(String matklCode) {
-        this.matklCode = matklCode;
+
+    public void setMatnrValue(String matnrValue) {
+        this.matnrValue = matnrValue;
     }
 
     

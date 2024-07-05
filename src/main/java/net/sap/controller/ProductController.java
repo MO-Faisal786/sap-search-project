@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import net.sap.dao.Product;
 import net.sap.entity.ProductRequest;
+import net.sap.service.JsonDataToDatabseService;
 import net.sap.service.ProductRequestService;
 
 @Controller
 public class ProductController {
 	@Autowired
 	private ProductRequestService productRequestService;
+
+	@Autowired
+	private JsonDataToDatabseService jsonDataToDatabseService;
 
 	@GetMapping("/productSearch")
 	public String showSearchForm(Model model) {
@@ -32,6 +36,8 @@ public class ProductController {
 
 			materialcodes = productRequestService.getAllMaterialCodes();
 			model.addAttribute("materialcodes", materialcodes);
+
+			jsonDataToDatabseService.saveDataFromJsonToDatabase();
 
 		} catch (final Exception e) {
 			e.printStackTrace();

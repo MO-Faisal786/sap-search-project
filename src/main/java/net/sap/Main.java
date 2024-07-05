@@ -1,40 +1,48 @@
 package net.sap;
 
-public class Main {
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-    private static final String CREATE_TABLE_SQL_TEMPLATE = "CREATE TABLE IF NOT EXISTS %s (id INT AUTO_INCREMENT PRIMARY KEY, %s_value VARCHAR(255))";
-    private static final String INSERT_DATA_SQL_TEMPLATE = "INSERT INTO %s (%s_value) VALUES (?)"; // ? - placeholder for data
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.sap.dao.MaterialSetResponse;
+import net.sap.dao.MaterialSetResponse.Material;
+
+public class Main {
     public static void main(String[] args) {
-        // try {
-        //     String jsonData = new String(Files.readAllBytes(Paths.get("C:\\Users\\user\\OneDrive\\Desktop\\JSON.txt")));
-        //     ObjectMapper objectMapper = new ObjectMapper();
-        //     Map<String, Map<String, ArrayList<Map<String, Object>>>> jsonMap = objectMapper.readValue(jsonData, Map.class);
-        //     jsonMap
-        //     .forEach((key, value) -> {
-        //         System.out.println("================"+key+"================");
-        //         value.forEach((k, v) -> {
-        //             System.out.println("================"+k+"================");
-        //             for(Map<String, Object> e : v){
-        //                 e.forEach((kk, vv) -> {
-        //                     if(kk.equals("__metadata")){
-                                
-        //                     } else {
-        //                         System.out.println(String.format(CREATE_TABLE_SQL_TEMPLATE, kk, kk));
-        //                         System.out.println(String.format(INSERT_DATA_SQL_TEMPLATE, kk, kk));
-        //                     }
-        //                 });
-        //                 System.out.println("==========================");
-        //             }
-        //         });
-        //     });
+        ObjectMapper objectMapper = new ObjectMapper();
+        Set<String> matnr = new LinkedHashSet<>();
+        Set<String> mbrsh = new LinkedHashSet<>();
+        Set<String> mtart = new LinkedHashSet<>();
+        Set<String> meins = new LinkedHashSet<>();
+        Set<String> maktx = new LinkedHashSet<>();
+        Set<String> vprsv = new LinkedHashSet<>();
+        Set<String> bklas = new LinkedHashSet<>();
+        Set<String> dismm = new LinkedHashSet<>();
+        Set<String> ekgrp = new LinkedHashSet<>();
+        Set<String> prctr = new LinkedHashSet<>();
+        Set<String> matkl = new LinkedHashSet<>();
+        try {
+            MaterialSetResponse response = objectMapper.readValue(new File("D:/InternshipWork/sap-search/src/main/java/net/sap/Json/JSON.json"), MaterialSetResponse.class);
             
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
-        // String tableName = "mtart";
-        // System.out.println(String.format(CREATE_TABLE_SQL_TEMPLATE, tableName, tableName));
-        // System.out.println(String.format(INSERT_DATA_SQL_TEMPLATE, tableName, tableName));
-        // String simpleName = Mtart.class.getSimpleName();
-        // System.out.println(simpleName);
+            for(Material e : response.getD().getResults()){
+                matnr.add(e.getMatnr());
+                mbrsh.add(e.getMbrsh());
+                mtart.add(e.getMtart());
+                meins.add(e.getMeins());
+                maktx.add(e.getMaktx());
+                vprsv.add(e.getVprsv());
+                bklas.add(e.getBklas());
+                dismm.add(e.getDismm());
+                ekgrp.add(e.getEkgrp());
+                prctr.add(e.getPrctr());
+                matkl.add(e.getMatkl());
+            }
+            System.out.println(mbrsh);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
