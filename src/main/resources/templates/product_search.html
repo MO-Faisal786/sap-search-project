@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Material Creation/Update Screen</title>
+  <style type="text/css">
+      label {
+        display: inline-block;
+        width: 200px;
+        margin: 5px;
+        text-align: left;
+      }
+      input[type="text"],
+      input[type="password"],
+      input[list],
+      select {
+        width: 200px;
+        box-sizing: border-box;
+      }
+      input[type="radio"] {
+        display: inline-block;
+        margin-left: 45px;
+      }
+      input[type="checkbox"] {
+        display: inline-block;
+        margin-right: 190px;
+      }
+      button {
+      	width: 200px;
+        padding: 10px;
+        margin: 10px;
+      }
+      .successMessage {
+        color: #270;
+        background-color: #dff2bf;
+      }
+      .failMessage {
+        color: rgb(179, 85, 22);
+        background-color: #dff2bf;
+      }
+    </style>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script th:inline="javascript">
+        $(document).ready(function() {
+            var existingMaterialCodes = [
+  		      '6','8','9','12','14','15','16','2430000004','2430000006','2430000007','2430000008','2430000012','2430000013','2430000015','2430000016','2430000027','2430000029','2430000030','2430000032','2430000033','2430000034','2430000035','2430000038','2430000039','2430000040','2430000041','2430000043','2430000049','2430000050','2430000051','2430000054','2430000055','2430000056','2430000062','3433300001','3433300002','3433300008','3433300009','3433300010','3433300011','3433300012','3433300013','3433300016','3433300017','3433300018','3433300019','3433300020','3433300021','3433300023','3433300024','3433300025'
+              ];
+            
+            var materialcodes = /*[[${materialcodes}]]*/ 
+
+           existingMaterialCodes = existingMaterialCodes.concat(materialcodes);
+            console.log("existingMaterialCodes",existingMaterialCodes);
+
+            var materialDescriptions = /*[[${materialDescriptions}]]*/
+
+            $('#matnr').on('blur keyup', function() {
+                var enteredValue = $(this).val();
+                if (existingMaterialCodes.includes(enteredValue)) {
+                    $('#error-message').text('This Material code already exists').show();
+                    if ($('#error-message').next('br#error-br').length === 0) {
+                        $('#error-message').after('<br id="error-br" />');
+                    }
+                    $('#save').prop("disabled", true);
+                } else {
+                    $('#error-message').hide();
+                    $('#error-br').remove();
+                    $('#save').prop("disabled", false);
+                }
+            });
+            
+            $('#maktx').on('blur keyup', function() {
+                var enteredValue = $(this).val();
+                if (materialDescriptions.includes(enteredValue)) {
+                    $('#error-message-maktx').text('This Material description is already exists').show();
+                    if ($('#error-message-maktx').next('br#error-br').length === 0) {
+                        $('#error-message-maktx').after('<br id="error-br-maktx" />');
+                    }
+                    $('#save').prop("disabled", true);
+                } else {
+                    $('#error-message-maktx').hide();
+                    $('#error-br-maktx').remove();
+                    $('#save').prop("disabled", false);
+                }
+            });
+        });
+
+        function updateValue(input) {
+            var hiddenInput = document.getElementById(input.id + "Value");
+            var options = input.list.options;
+
+            hiddenInput.value = ""; 
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === input.value) {
+                    hiddenInput.value = options[i].getAttribute("data-value");
+                    break;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div align="center">
+        <h2>Material Creation/Update Screen</h2>
+        <form action="#" th:action="@{/productSearch}" method="post" th:object="${product}">
+            <label>Material Type:</label>
+            <input list="MtartOptions" id="MtartInput" placeholder="Search Material Type" required oninput="updateValue(this)">
+            <input type="hidden" id="MtartInputValue" name="MTART">
+            <datalist id="MtartOptions">
+				<option data-value="1" th:each="materialType:${materialTypes}" th:value="${materialType}"></option>
+				<!-- <option data-value="ABF" value="Waste"></option>
+				<option data-value="BUND" value="Bundle Product"></option>
+				<option data-value="CBAU" value="Compatible  Unit"></option>
+				<option data-value="CH00" value="CH Contract Handling"></option>
+				<option data-value="CONT" value="Kanban Container"></option>
+				<option data-value="COUP" value="Coupons"></option>
+				<option data-value="DIEN" value="Service"></option>
+				<option data-value="EPA " value="Equipment Package"></option>
+				<option data-value="ERSA" value="SpareParts"></option>
+				<option data-value="FERT" value="Finished Product"></option>
+				<option data-value="FFFC" value="Form-Fit-Function class"></option>
+				<option data-value="FGTR" value="Beverages"></option>
+				<option data-value="FHMI" value="Production Resource/Tool"></option>
+				<option data-value="FOOD" value="Foods (excl.perishables)"></option>
+				<option data-value="FRIP" value="Perishables"></option>
+				<option data-value="GBRA" value="ETM usable material"></option>
+				<option data-value="HALB" value="Semifinished Product"></option>
+				<option data-value="HAWA" value="Trading Goods"></option>
+				<option data-value="HERB" value="Interchangeable part"></option>
+				<option data-value="HERS" value="Manufacturer Part"></option>
+				<option data-value="HIBE" value="Operating supplies"></option>
+				<option data-value="IBAU" value="Maintenance assemblies"></option>
+				<option data-value="INTR" value="Intramaterials"></option>
+				<option data-value="IWIP" value="WorkinProcess"></option>
+				<option data-value="KMAT" value="Configurable materials"></option>
+				<option data-value="LEER" value="Empties"></option>
+				<option data-value="LEIH" value="Returnable packaging"></option>
+				<option data-value="LGUT" value="Empties(retail)"></option>
+				<option data-value="MODE" value="Apparel(seasonal)"></option>
+				<option data-value="MPO " value="Material Planning Object"></option>
+				<option data-value="NLAG" value="Non-stock materials"></option>
+				<option data-value="NOF1" value="Nonfoods"></option>
+				<option data-value="PIPE" value="Pipeline materials"></option>
+				<option data-value="PLAN" value="Tradinggoods(planned)"></option>
+				<option data-value="PROC" value="Process materials"></option>
+				<option data-value="PROD" value="Product groups"></option>
+				<option data-value="ROH " value="Raw materials"></option>
+				<option data-value="SERV" value="Service Product"></option>
+				<option data-value="SUBC" value="Subscription Sharing Prd."></option>
+				<option data-value="SUBP" value="Subscription Partner Prd."></option>
+				<option data-value="SUBS" value="Subscription Product"></option>
+				<option data-value="UNBW" value="Non-valuated Materials"></option>
+				<option data-value="VBRA" value="ETM consumption material"></option>
+				<option data-value="VEHI" value="Vehicle config"></option>
+				<option data-value="VERP" value="Packaging"></option>
+				<option data-value="VKHM" value="Additionals"></option>
+				<option data-value="VOLL" value="Fullproducts"></option>
+				<option data-value="VVGR" value="Competitor Product"></option>
+				<option data-value="WERB" value="Product catalogs"></option>
+				<option data-value="WERT" value="Value-only materials"></option>
+				<option data-value="WETT" value="Competitor products"></option> -->
+            </datalist><br />
+            
+            <label>Industry:</label>
+            <input list="MbrshOptions" id="MbrshInput" placeholder="Search Industry Type" required oninput="updateValue(this)">
+            <input type="hidden" id="MbrshInputValue" name="MBRSH">
+            <datalist id="MbrshOptions">
+				<option data-value="1" th:each = "industry : ${industries}" th:value="${industry}"></option>
+				<!-- <option data-value="1" value="Retail"></option>
+				<option data-value="A" value="Plant engin./construction"></option>
+				<option data-value="C" value="Chemical industry"></option>
+				<option data-value="E" value="Electronics"></option>
+				<option data-value="F" value="Food and Beverages"></option>
+				<option data-value="I" value="IT Services"></option>
+				<option data-value="L" value="Construction"></option>
+				<option data-value="M" value="Mechanical engineering"></option>
+				<option data-value="O" value="Oil and Gas"></option>
+				<option data-value="P" value="Pharmaceuticals"></option>
+				<option data-value="T" value="Agriculture"></option>
+				<option data-value="Z" value="Aerospace"></option> -->
+            </datalist><br />
+            
+            <label>Material Code:</label>
+            <input id="matnr" type="text" th:field="*{MATNR}" th:maxlength="18" placeholder="Enter Material Code" /><br />
+            <span id="error-message" style="color: red; display: none;"></span>
+            
+            <label>Material Description:</label>
+            <input id="maktx" type="text" th:field="*{MAKTX}" th:maxlength="40" placeholder="Enter Material Description" /><br />
+            <span id="error-message-maktx" style="color: red; display: none;"></span>
+            
+            <label>Unit of Measure:</label>
+            <input list="MeinsOptions" id="MeinsInput" placeholder="Search Measurement Unit" required oninput="updateValue(this)">
+            <input type="hidden" id="MeinsInputValue" name="MEINS">
+            <datalist id="MeinsOptions">
+				<option data-value="BAG" value="Bag"></option>
+				<option data-value="BOT" value="Bottle"></option>
+				<option data-value="COP" value="Copies"></option>
+				<option data-value="CS" value="Case"></option>
+				<option data-value="DEG" value="Degree"></option>
+				<option data-value="DGP" value="ADR Points"></option>
+				<option data-value="DR" value="Drum"></option>
+				<option data-value="DZ" value="Dozen"></option>
+				<option data-value="EA" value="Each"></option>
+				<option data-value="EE" value="Enzy.Units"></option>
+				<option data-value="EML" value="Enzyme/ml"></option>
+				<option data-value="EXR" value="Ex.Rate"></option>
+				<option data-value="G/L" value="gai/liter"></option>
+				<option data-value="GAU" value="Gram Gold"></option>
+				<option data-value="GRO" value="Gross"></option>
+				<option data-value="GW" value="g act.ing."></option>
+				<option data-value="KAN" value="Canister"></option>
+				<option data-value="KAR" value="Carton"></option>
+				<option data-value="KGW" value="kg ac.ing."></option>
+				<option data-value="KI" value="Crate"></option>
+				<option data-value="KWK" value="kai/kg"></option>
+				<option data-value="LA" value="LA "></option>
+				<option data-value="LE" value="AU "></option>
+				<option data-value="LM" value="m/Piece"></option>
+				<option data-value="MLW" value="ml act.in."></option>
+				<option data-value="PAA" value="Pair"></option>
+				<option data-value="PAK" value="Pack"></option>
+				<option data-value="PAL" value="Pallet"></option>
+				<option data-value="PCT" value="Group prop"></option>
+				<option data-value="PRS" value="Persons"></option>
+				<option data-value="ROL" value="Roll"></option>
+				<option data-value="ST" value="Piece"></option>
+				<option data-value="TEU" value="TEU"></option>
+				<option data-value="TH" value="Thousands"></option>
+				<option data-value="VAL" value="Value"></option>
+            </datalist><br />
+            
+            <label>Price Control V/S:</label>
+            <input list="VprsvOptions" id="VprsvInput" placeholder="Search Price Control" required oninput="updateValue(this)">
+            <input type="hidden" id="VprsvInputValue" name="VPRSV">
+            <datalist id="VprsvOptions">
+                <option data-value="V" value="V"></option>
+                <option data-value="S" value="S"></option>
+            </datalist><br />
+            
+            <label>Valuation Class:</label>
+            <input list="BklasOptions" id="BklasInput" placeholder="Search Valuation Class" required oninput="updateValue(this)">
+            <input type="hidden" id="BklasInputValue" name="BKLAS">
+            <datalist id="BklasOptions">
+				<option data-value="710" value="Equipment 1"></option>
+				<option data-value="720" value="Equipment 2"></option>
+				<option data-value="1210" value="Spec.complex fixed assets"></option>
+				<option data-value="3000" value="RM Sheet"></option>
+				<option data-value="3001" value="RM Coil"></option>
+				<option data-value="3002" value="RM MS pipe"></option>
+				<option data-value="3003" value="RM Others"></option>
+				<option data-value="3030" value="Operating supplies"></option>
+				<option data-value="3031" value="Operating supplies 2"></option>
+				<option data-value="3040" value="Spare parts"></option>
+				<option data-value="3050" value="Packaging and empties"></option>
+				<option data-value="3100" value="Trading goods"></option>
+				<option data-value="3200" value="Services"></option>
+				<option data-value="3300" value="Nonvaluated material"></option>
+				<option data-value="7900" value="Semifinished products"></option>
+				<option data-value="7920" value="Finished products"></option>
+            </datalist><br />
+
+            <label>Price:</label>
+            <input type="text" th:field="*{PEINH}" th:maxlength="1000" placeholder="Enter Price" /><br />
+            
+            <label>MRP Type:</label>
+            <input list="DismmOptions" id="DismmInput" placeholder="Search MRP Type" required oninput="updateValue(this)">
+            <input type="hidden" id="DismmInputValue" name="DISMM">
+            <datalist id="DismmOptions">
+				<option data-value="D1" value="Demand-Driven Replenishment, fixing type -1-"></option>
+				<option data-value="D2" value="Demand-Driven Replenishment - Repetitive Manufacturing"></option>
+				<option data-value="M0" value="MPS, fixing type -0-"></option>
+				<option data-value="M1" value="MPS, fixing type -1-"></option>
+				<option data-value="M2" value="MPS, fixing type -2-"></option>
+				<option data-value="M3" value="MPS, fixing type -3-"></option>
+				<option data-value="M4" value="MPS, fixing type -4-"></option>
+				<option data-value="ND" value="No planning"></option>
+				<option data-value="P1" value="MRP, fixing type -1-"></option>
+				<option data-value="P2" value="MRP, fixing type -2-"></option>
+				<option data-value="P3" value="MRP, fixing type -3-"></option>
+				<option data-value="P4" value="MRP, fixing type -4-"></option>
+				<option data-value="PD" value="MRP"></option>
+				<option data-value="R1" value="Time-phased planning"></option>
+				<option data-value="R2" value="Time-phased w.auto.reord.point"></option>
+				<option data-value="RE" value="Replenishment plnd externally "></option>
+				<option data-value="RF" value="Replenish with dyn.TargetStock"></option>
+				<option data-value="RP" value="Replenishment"></option>
+				<option data-value="V1" value="Manual reord.point w. ext.reqs"></option>
+				<option data-value="V2" value="Autom. reord.point w. ext.reqs"></option>
+				<option data-value="VB" value="Manual reorder point planning"></option>
+				<option data-value="VI" value="Vendor Managed Inventory"></option>
+				<option data-value="VM" value="Automatic reorder point plng"></option>
+				<option data-value="VS" value="Seasonal MRP"></option>
+				<option data-value="VV" value="Forecast-based planning"></option>
+				<option data-value="X0" value="W/O MRP, with BOM Explosion"></option>
+            </datalist><br />
+            
+            <label>Purchasing Group:</label>
+            <input list="EkgrpOptions" id="EkgrpInput" placeholder="Search Purchasing Group" required oninput="updateValue(this)">
+            <input type="hidden" id="EkgrpInputValue" name="EKGRP">
+            <datalist id="EkgrpOptions">
+				<option data-value="1" value="Einkäufer 1"></option>
+				<option data-value="2" value="Einkäufer 2"></option>
+				<option data-value="3" value="Einkäufer 3"></option>
+				<option data-value="RG1" value="Raw Materials"></option>
+				<option data-value="RG2" value="BOP"></option>
+				<option data-value="RG3" value="Imports"></option>
+				<option data-value="RG4" value="Spares"></option>
+				<option data-value="RG5" value="Consumables"></option>
+				<option data-value="RG6" value="Capitals"></option>
+				<option data-value="RG7" value="Services"></option>
+				<option data-value="RG8" value="Subcontracting"></option>
+            </datalist><br />
+            
+            <label>Profit Center:</label>
+            <input list="PrctrOptions" id="PrctrInput" placeholder="Search Profit Center" required oninput="updateValue(this)">
+            <input type="hidden" id="PrctrInputValue" name="PRCTR">
+            <datalist id="PrctrOptions">
+                <option data-value="8790" value="RGT"></option>
+                <option data-value="LAPSAM01" value="Ashish Rawat"></option>
+            </datalist><br />
+        
+            <label>Material Group:</label>
+            <input list="MatklOptions" id="MatklInput" placeholder="Search Material Group" required oninput="updateValue(this)">
+            <input type="hidden" id="MatklInputValue" name="MATKL">
+            <datalist id="MatklOptions">
+				<option data-value="1" value="Material group 1"></option>
+				<option data-value="2" value="Material group 2"></option>
+				<option data-value="BOP0001" value="BOP"></option>
+				<option data-value="CON0001" value="Consumbales"></option>
+				<option data-value="DV_MGRP01" value="Digital Vehicle Mgrp"></option>
+				<option data-value="FG0001" value="Finish Goods"></option>
+				<option data-value="RM00001" value="Raw Materials"></option>
+				<option data-value="RM00002" value="RM Sheet"></option>
+				<option data-value="RM00003" value="RM Coil"></option>
+				<option data-value="RM00004" value="RM Pipe"></option>
+				<option data-value="SE00001" value="SERVICES"></option>
+				<option data-value="SFG001" value="Semifinish Goods"></option>
+				<option data-value="SP00001" value="Spares"></option>
+            </datalist><br />
+            
+            <div th:if="*{status} != ''">
+                <div class="successMessage" th:if="*{status} == 'success'">
+                    <span th:text="*{msg}"></span>
+                </div>
+                <div class="failMessage" th:if="*{status} == 'fail'">
+                    <span th:text="*{msg}"></span>
+                </div>
+            </div>
+            <br />
+            <button id="save" type="submit">Create</button>
+            <button>Save</button>
+            <button>Update</button>
+        </form>
+    </div>
+</body>
+</html>
