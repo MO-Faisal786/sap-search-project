@@ -1,18 +1,14 @@
 package net.sap.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Objects;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "maktx")
 public class Maktx {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Integer id;
 
     @Column(name = "maktx_code")
@@ -45,5 +41,16 @@ public class Maktx {
         this.maktxValue = maktxValue;
     }
 
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        Maktx myObject = (Maktx) obj;
+        return Objects.equals(maktxCode, myObject.getMaktxCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maktxCode, maktxValue);
+    }
 }

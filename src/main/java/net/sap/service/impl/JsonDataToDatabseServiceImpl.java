@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,106 +110,165 @@ public class JsonDataToDatabseServiceImpl implements JsonDataToDatabseService {
             if (!bklasSet.isEmpty()) {
                 List<Bklas> bklasList = new ArrayList<>();
                 for (String e : bklasSet) {
-                    Bklas bklas = new Bklas();
-                    bklas.setBklasCode(e);
-                    bklasList.add(bklas);
+                    if (!e.equals("")) {
+                        Bklas bklas = new Bklas();
+                        bklas.setBklasCode(e);
+                        bklasList.add(bklas);
+                    }
                 }
-                bklasRepository.saveAll(bklasList);
+                List<Bklas> bklasAll = bklasRepository.findAll();
+                List<Bklas> differentElements = bklasList.stream().filter(e -> !bklasAll
+                .contains(e)).collect(Collectors.toList());
+                bklasRepository.saveAll(differentElements);
             }
             if (!dismmSet.isEmpty()) {
                 List<Dismm> dismmList = new ArrayList<>();
                 for (String e : dismmSet) {
-                    Dismm dismm = new Dismm();
-                    dismm.setDismmCode(e);
-                    dismmList.add(dismm);
+                    if (!e.equals("")) {
+                        Dismm dismm = new Dismm();
+                        dismm.setDismmCode(e);
+                        dismmList.add(dismm);
+                    }
                 }
-                dismmRepository.saveAll(dismmList);
+                List<Dismm> dismmAll = dismmRepository.findAll();
+                List<Dismm> differentElements = dismmList.stream().filter(e -> !dismmAll
+                .contains(e)).collect(Collectors.toList());
+                dismmRepository.saveAll(differentElements);
             }
             if (!ekgrpSet.isEmpty()) {
                 List<Ekgrp> ekgrpList = new ArrayList<>();
                 for (String e : ekgrpSet) {
-                    Ekgrp ekgrp = new Ekgrp();
-                    ekgrp.setEkgrpCode(e);
-                    ekgrpList.add(ekgrp);
+                    if (!e.equals("")) {
+                        if (!e.equals("")) {
+                            Ekgrp ekgrp = new Ekgrp();
+                            ekgrp.setEkgrpCode(e);
+                            ekgrpList.add(ekgrp);
+                        }
+                    }
                 }
-                ekgrpRepository.saveAll(ekgrpList);
+                List<Ekgrp> ekgrpAll = ekgrpRepository.findAll();
+                List<Ekgrp> differentElements = ekgrpList.stream().filter(e -> !ekgrpAll
+                        .contains(e)).collect(Collectors.toList());
+                ekgrpRepository.saveAll(differentElements);
             }
             if (!matklSet.isEmpty()) {
                 List<Matkl> matklList = new ArrayList<>();
                 for (String e : matklSet) {
-                    Matkl matkl = new Matkl();
-                    matkl.setMatklCode(e);
-                    matklList.add(matkl);
+                    if (!e.equals("")) {
+                        Matkl matkl = new Matkl();
+                        matkl.setMatklCode(e);
+                        matklList.add(matkl);
+                    }
                 }
-                matklRepository.saveAll(matklList);
+                List<Matkl> matklAll = matklRepository.findAll();
+                List<Matkl> differentElements = matklList.stream().filter(e -> !matklAll
+                        .contains(e)).collect(Collectors.toList());
+                matklRepository.saveAll(differentElements);
             }
             if (!matnrSet.isEmpty()) {
                 List<Matnr> matnrList = new ArrayList<>();
                 for (String e : matnrSet) {
-                    Matnr matnr = new Matnr();
-                    matnr.setMatnrCode(e);
-                    matnrList.add(matnr);
+                    if (!e.equals("")) {
+                        Matnr matnr = new Matnr();
+                        matnr.setMatnrCode(e);
+                        matnrList.add(matnr);
+                    }
                 }
-                matnrRepository.saveAll(matnrList);
+                List<Matnr> matnrAll = matnrRepository.findAll();
+                List<Matnr> differentElements = matnrList.stream().filter(e -> !matnrAll
+                        .contains(e)).collect(Collectors.toList());
+                matnrRepository.saveAll(differentElements);
             }
             if (!prctrSet.isEmpty()) {
                 List<Prctr> prctrList = new ArrayList<>();
                 for (String e : prctrSet) {
-                    Prctr prctr = new Prctr();
-                    prctr.setPrctrCode(e);
-                    prctrList.add(prctr);
+                    if (!e.equals("")) {
+                        Prctr prctr = new Prctr();
+                        prctr.setPrctrCode(e);
+                        prctrList.add(prctr);
+                    }
                 }
-                prctrRepository.saveAll(prctrList);
+                List<Prctr> prctrAll = prctrRepository.findAll();
+                List<Prctr> differentElements = prctrList.stream().filter(e -> !prctrAll
+                        .contains(e)).collect(Collectors.toList());
+                prctrRepository.saveAll(differentElements);
             }
 
             if (!mbrshSet.isEmpty()) {
                 List<Mbrsh> mbrshList = new ArrayList<>();
                 for (String e : mbrshSet) {
-                    Mbrsh mbrsh = new Mbrsh();
-                    mbrsh.setMbrshCode(e);
-                    mbrshList.add(mbrsh);
+                    if (!e.equals("")) {
+                        Mbrsh mbrsh = new Mbrsh();
+                        mbrsh.setMbrshCode(e);
+                        mbrshList.add(mbrsh);
+                    }
                 }
-                mbrshRepository.saveAll(mbrshList);
+                List<Mbrsh> mbrshAll = mbrshRepository.findAll();
+                List<Mbrsh> differentElements = mbrshList.stream().filter(e -> !mbrshAll
+                        .contains(e)).collect(Collectors.toList());
+                mbrshRepository.saveAll(differentElements);
+
             }
             if (!mtartSet.isEmpty()) {
                 List<Mtart> mtartList = new ArrayList<>();
                 for (String e : mtartSet) {
-                    Mtart mtart = new Mtart();
-                    mtart.setMtartCode(e);
-                    mtartList.add(mtart);
+                    if (!e.equals("")) {
+                        Mtart mtart = new Mtart();
+                        mtart.setMtartCode(e);
+                        mtartList.add(mtart);
+                    }
                 }
-                mtartRepository.saveAll(mtartList);
+
+                List<Mtart> mtartAll = mtartRepository.findAll();
+                List<Mtart> differentElements = mtartList.stream().filter(e -> !mtartAll
+                        .contains(e)).collect(Collectors.toList());
+                mtartRepository.saveAll(differentElements);
             }
 
             if (!meinsSet.isEmpty()) {
                 List<Meins> meinsList = new ArrayList<>();
                 for (String e : meinsSet) {
-                    Meins meins = new Meins();
-                    meins.setMeinsCode(e);
-                    meinsList.add(meins);
+                    if (!e.equals("")) {
+                        Meins meins = new Meins();
+                        meins.setMeinsCode(e);
+                        meinsList.add(meins);
+                    }
                 }
-                meinsRepository.saveAll(meinsList);
+                List<Meins> meinsAll = meinsRepository.findAll();
+                List<Meins> differentElements = meinsList.stream().filter(e -> !meinsAll
+                        .contains(e)).collect(Collectors.toList());
+                meinsRepository.saveAll(differentElements);
             }
 
             if (!vprsvSet.isEmpty()) {
                 List<Vprsv> vprsvList = new ArrayList<>();
                 for (String e : vprsvSet) {
-                    Vprsv vprsv = new Vprsv();
-                    vprsv.setVprsvCode(e);
-                    vprsvList.add(vprsv);
+                    if (!e.equals("")) {
+                        Vprsv vprsv = new Vprsv();
+                        vprsv.setVprsvCode(e);
+                        vprsvList.add(vprsv);
+                    }
                 }
-                vprsvRepository.saveAll(vprsvList);
+                List<Vprsv> vprsvAll = vprsvRepository.findAll();
+                List<Vprsv> differentElements = vprsvList.stream().filter(e -> !vprsvAll
+                        .contains(e)).collect(Collectors.toList());
+                vprsvRepository.saveAll(differentElements);
 
             }
 
             if (!maktxSet.isEmpty()) {
                 List<Maktx> mktxList = new ArrayList<>();
                 for (String e : maktxSet) {
-                    Maktx mktx = new Maktx();
-                    mktx.setMaktxCode(e);
-                    mktxList.add(mktx);
+                    if (!e.equals("")) {
+                        Maktx mktx = new Maktx();
+                        mktx.setMaktxCode(e);
+                        mktxList.add(mktx);
+                    }
                 }
-                maktxRepository.saveAll(mktxList);
+                List<Maktx> maktxAll = maktxRepository.findAll();
+                List<Maktx> differentElements = mktxList.stream().filter(e -> !maktxAll
+                        .contains(e)).collect(Collectors.toList());
+                maktxRepository.saveAll(differentElements);
             }
         } catch (IOException e) {
             e.printStackTrace();
