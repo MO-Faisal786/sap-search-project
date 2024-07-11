@@ -48,6 +48,6 @@ public class Vprsv {
 
     @Override
     public int hashCode() {
-        return Objects.hash(vprsvCode, vprsvValue);
+        return Objects.hash(vprsvCode);
     }
 }

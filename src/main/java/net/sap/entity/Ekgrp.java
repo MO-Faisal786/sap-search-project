@@ -47,7 +47,7 @@ public class Ekgrp {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ekgrpCode, ekgrpValue);
+        return Objects.hash(ekgrpCode);
     }
 
 

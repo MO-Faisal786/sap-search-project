@@ -50,6 +50,6 @@ public class Mtart {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mtartCode, mtartValue);
+        return Objects.hash(mtartCode);
     }
 }

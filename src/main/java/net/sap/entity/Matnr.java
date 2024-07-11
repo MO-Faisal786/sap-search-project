@@ -52,6 +52,6 @@ public class Matnr {
 
     @Override
     public int hashCode() {
-        return Objects.hash(matnrCode, matnrValue);
+        return Objects.hash(matnrCode);
     }
 }

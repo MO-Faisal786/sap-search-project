@@ -38,6 +38,7 @@ public class ProductController {
 			model.addAttribute("materialcodes", materialcodes);
 
 			jsonDataToDatabseService.saveDataFromJsonToDatabase();
+			
 
 		} catch (final Exception e) {
 			e.printStackTrace();

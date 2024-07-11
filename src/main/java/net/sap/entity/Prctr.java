@@ -49,6 +49,6 @@ public class Prctr {
 
     @Override
     public int hashCode() {
-        return Objects.hash(prctrCode, prctrValue);
+        return Objects.hash(prctrCode);
     }
 }

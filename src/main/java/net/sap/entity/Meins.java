@@ -48,6 +48,6 @@ public class Meins {
 
     @Override
     public int hashCode() {
-        return Objects.hash(meinsCode, meinsValue);
+        return Objects.hash(meinsCode);
     }
 }

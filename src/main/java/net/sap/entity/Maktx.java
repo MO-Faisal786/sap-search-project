@@ -51,6 +51,6 @@ public class Maktx {
 
     @Override
     public int hashCode() {
-        return Objects.hash(maktxCode, maktxValue);
+        return Objects.hash(maktxCode);
     }
 }

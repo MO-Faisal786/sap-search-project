@@ -54,6 +54,6 @@ public class Matkl {
 
     @Override
     public int hashCode() {
-        return Objects.hash(matklCode, matklValue);
+        return Objects.hash(matklCode);
     }
 }

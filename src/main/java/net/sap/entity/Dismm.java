@@ -48,6 +48,6 @@ public class Dismm {
 
     @Override
     public int hashCode() {
-        return Objects.hash(dismmCode, dismmValue);
+        return Objects.hash(dismmCode);
     }
 }

@@ -56,6 +56,6 @@ public class Bklas {
 
     @Override
     public int hashCode() {
-        return Objects.hash(bklasCode, bklasValue);
+        return Objects.hash(bklasCode);
     }
 }

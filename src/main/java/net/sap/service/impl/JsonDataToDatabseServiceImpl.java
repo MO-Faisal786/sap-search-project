@@ -1,15 +1,19 @@
 package net.sap.service.impl;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -77,202 +81,57 @@ public class JsonDataToDatabseServiceImpl implements JsonDataToDatabseService {
 
     @Override
     public void saveDataFromJsonToDatabase() {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:3000/api/data";
         ObjectMapper objectMapper = new ObjectMapper();
-        Set<String> matnrSet = new LinkedHashSet<>();
-        Set<String> mbrshSet = new LinkedHashSet<>();
-        Set<String> mtartSet = new LinkedHashSet<>();
-        Set<String> meinsSet = new LinkedHashSet<>();
-        Set<String> maktxSet = new LinkedHashSet<>();
-        Set<String> vprsvSet = new LinkedHashSet<>();
-        Set<String> bklasSet = new LinkedHashSet<>();
-        Set<String> dismmSet = new LinkedHashSet<>();
-        Set<String> ekgrpSet = new LinkedHashSet<>();
-        Set<String> prctrSet = new LinkedHashSet<>();
-        Set<String> matklSet = new LinkedHashSet<>();
         try {
-            MaterialSetResponse response = objectMapper.readValue(
-                    new File("D:/InternshipWork/sap-search/src/main/java/net/sap/Json/JSON.json"),
-                    MaterialSetResponse.class);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            MaterialSetResponse jsonResponse = objectMapper.readValue(response.getBody(), MaterialSetResponse.class);
 
-            for (Material e : response.getD().getResults()) {
-                matnrSet.add(e.getMatnr());
-                mbrshSet.add(e.getMbrsh());
-                mtartSet.add(e.getMtart());
-                meinsSet.add(e.getMeins());
-                maktxSet.add(e.getMaktx());
-                vprsvSet.add(e.getVprsv());
-                bklasSet.add(e.getBklas());
-                dismmSet.add(e.getDismm());
-                ekgrpSet.add(e.getEkgrp());
-                prctrSet.add(e.getPrctr());
-                matklSet.add(e.getMatkl());
-            }
-            if (!bklasSet.isEmpty()) {
-                List<Bklas> bklasList = new ArrayList<>();
-                for (String e : bklasSet) {
-                    if (!e.equals("")) {
-                        Bklas bklas = new Bklas();
-                        bklas.setBklasCode(e);
-                        bklasList.add(bklas);
-                    }
-                }
-                List<Bklas> bklasAll = bklasRepository.findAll();
-                List<Bklas> differentElements = bklasList.stream().filter(e -> !bklasAll
-                .contains(e)).collect(Collectors.toList());
-                bklasRepository.saveAll(differentElements);
-            }
-            if (!dismmSet.isEmpty()) {
-                List<Dismm> dismmList = new ArrayList<>();
-                for (String e : dismmSet) {
-                    if (!e.equals("")) {
-                        Dismm dismm = new Dismm();
-                        dismm.setDismmCode(e);
-                        dismmList.add(dismm);
-                    }
-                }
-                List<Dismm> dismmAll = dismmRepository.findAll();
-                List<Dismm> differentElements = dismmList.stream().filter(e -> !dismmAll
-                .contains(e)).collect(Collectors.toList());
-                dismmRepository.saveAll(differentElements);
-            }
-            if (!ekgrpSet.isEmpty()) {
-                List<Ekgrp> ekgrpList = new ArrayList<>();
-                for (String e : ekgrpSet) {
-                    if (!e.equals("")) {
-                        if (!e.equals("")) {
-                            Ekgrp ekgrp = new Ekgrp();
-                            ekgrp.setEkgrpCode(e);
-                            ekgrpList.add(ekgrp);
-                        }
-                    }
-                }
-                List<Ekgrp> ekgrpAll = ekgrpRepository.findAll();
-                List<Ekgrp> differentElements = ekgrpList.stream().filter(e -> !ekgrpAll
-                        .contains(e)).collect(Collectors.toList());
-                ekgrpRepository.saveAll(differentElements);
-            }
-            if (!matklSet.isEmpty()) {
-                List<Matkl> matklList = new ArrayList<>();
-                for (String e : matklSet) {
-                    if (!e.equals("")) {
-                        Matkl matkl = new Matkl();
-                        matkl.setMatklCode(e);
-                        matklList.add(matkl);
-                    }
-                }
-                List<Matkl> matklAll = matklRepository.findAll();
-                List<Matkl> differentElements = matklList.stream().filter(e -> !matklAll
-                        .contains(e)).collect(Collectors.toList());
-                matklRepository.saveAll(differentElements);
-            }
-            if (!matnrSet.isEmpty()) {
-                List<Matnr> matnrList = new ArrayList<>();
-                for (String e : matnrSet) {
-                    if (!e.equals("")) {
-                        Matnr matnr = new Matnr();
-                        matnr.setMatnrCode(e);
-                        matnrList.add(matnr);
-                    }
-                }
-                List<Matnr> matnrAll = matnrRepository.findAll();
-                List<Matnr> differentElements = matnrList.stream().filter(e -> !matnrAll
-                        .contains(e)).collect(Collectors.toList());
-                matnrRepository.saveAll(differentElements);
-            }
-            if (!prctrSet.isEmpty()) {
-                List<Prctr> prctrList = new ArrayList<>();
-                for (String e : prctrSet) {
-                    if (!e.equals("")) {
-                        Prctr prctr = new Prctr();
-                        prctr.setPrctrCode(e);
-                        prctrList.add(prctr);
-                    }
-                }
-                List<Prctr> prctrAll = prctrRepository.findAll();
-                List<Prctr> differentElements = prctrList.stream().filter(e -> !prctrAll
-                        .contains(e)).collect(Collectors.toList());
-                prctrRepository.saveAll(differentElements);
-            }
+            List<Material> materials = jsonResponse.getD().getResults();
 
-            if (!mbrshSet.isEmpty()) {
-                List<Mbrsh> mbrshList = new ArrayList<>();
-                for (String e : mbrshSet) {
-                    if (!e.equals("")) {
-                        Mbrsh mbrsh = new Mbrsh();
-                        mbrsh.setMbrshCode(e);
-                        mbrshList.add(mbrsh);
-                    }
-                }
-                List<Mbrsh> mbrshAll = mbrshRepository.findAll();
-                List<Mbrsh> differentElements = mbrshList.stream().filter(e -> !mbrshAll
-                        .contains(e)).collect(Collectors.toList());
-                mbrshRepository.saveAll(differentElements);
+            saveEntities(matnrRepository, materials, Material::getMatnr, Matnr::new, Matnr::setMatnrCode);
+            saveEntities(mbrshRepository, materials, Material::getMbrsh, Mbrsh::new, Mbrsh::setMbrshCode);
+            saveEntities(mtartRepository, materials, Material::getMtart, Mtart::new, Mtart::setMtartCode);
+            saveEntities(meinsRepository, materials, Material::getMeins, Meins::new, Meins::setMeinsCode);
+            saveEntities(maktxRepository, materials, Material::getMaktx, Maktx::new, Maktx::setMaktxCode);
+            saveEntities(vprsvRepository, materials, Material::getVprsv, Vprsv::new, Vprsv::setVprsvCode);
+            saveEntities(bklasRepository, materials, Material::getBklas, Bklas::new, Bklas::setBklasCode);
+            saveEntities(dismmRepository, materials, Material::getDismm, Dismm::new, Dismm::setDismmCode);
+            saveEntities(ekgrpRepository, materials, Material::getEkgrp, Ekgrp::new, Ekgrp::setEkgrpCode);
+            saveEntities(prctrRepository, materials, Material::getPrctr, Prctr::new, Prctr::setPrctrCode);
+            saveEntities(matklRepository, materials, Material::getMatkl, Matkl::new, Matkl::setMatklCode);
 
-            }
-            if (!mtartSet.isEmpty()) {
-                List<Mtart> mtartList = new ArrayList<>();
-                for (String e : mtartSet) {
-                    if (!e.equals("")) {
-                        Mtart mtart = new Mtart();
-                        mtart.setMtartCode(e);
-                        mtartList.add(mtart);
-                    }
-                }
-
-                List<Mtart> mtartAll = mtartRepository.findAll();
-                List<Mtart> differentElements = mtartList.stream().filter(e -> !mtartAll
-                        .contains(e)).collect(Collectors.toList());
-                mtartRepository.saveAll(differentElements);
-            }
-
-            if (!meinsSet.isEmpty()) {
-                List<Meins> meinsList = new ArrayList<>();
-                for (String e : meinsSet) {
-                    if (!e.equals("")) {
-                        Meins meins = new Meins();
-                        meins.setMeinsCode(e);
-                        meinsList.add(meins);
-                    }
-                }
-                List<Meins> meinsAll = meinsRepository.findAll();
-                List<Meins> differentElements = meinsList.stream().filter(e -> !meinsAll
-                        .contains(e)).collect(Collectors.toList());
-                meinsRepository.saveAll(differentElements);
-            }
-
-            if (!vprsvSet.isEmpty()) {
-                List<Vprsv> vprsvList = new ArrayList<>();
-                for (String e : vprsvSet) {
-                    if (!e.equals("")) {
-                        Vprsv vprsv = new Vprsv();
-                        vprsv.setVprsvCode(e);
-                        vprsvList.add(vprsv);
-                    }
-                }
-                List<Vprsv> vprsvAll = vprsvRepository.findAll();
-                List<Vprsv> differentElements = vprsvList.stream().filter(e -> !vprsvAll
-                        .contains(e)).collect(Collectors.toList());
-                vprsvRepository.saveAll(differentElements);
-
-            }
-
-            if (!maktxSet.isEmpty()) {
-                List<Maktx> mktxList = new ArrayList<>();
-                for (String e : maktxSet) {
-                    if (!e.equals("")) {
-                        Maktx mktx = new Maktx();
-                        mktx.setMaktxCode(e);
-                        mktxList.add(mktx);
-                    }
-                }
-                List<Maktx> maktxAll = maktxRepository.findAll();
-                List<Maktx> differentElements = mktxList.stream().filter(e -> !maktxAll
-                        .contains(e)).collect(Collectors.toList());
-                maktxRepository.saveAll(differentElements);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private <T, R extends CharSequence, E> void saveEntities(JpaRepository<E, ?> repository, List<T> materials,
+            Function<T, R> getCode, Supplier<E> createEntity,
+            BiConsumer<E, R> setCode) {
+        Set<R> codes = materials.stream()
+                .map(getCode)
+                .filter(code -> code != null && !code.isEmpty())
+                .collect(Collectors.toSet());
+
+        if (!codes.isEmpty()) {
+            List<E> entities = codes.stream()
+                    .map(code -> {
+                        E entity = createEntity.get();
+                        setCode.accept(entity, code);
+                        return entity;
+                    })
+                    .collect(Collectors.toList());
+
+            List<E> existingEntities = StreamSupport.stream(repository.findAll().spliterator(), false)
+                    .collect(Collectors.toList());
+
+            List<E> newEntities = entities.stream()
+                    .filter(entity -> !existingEntities.contains(entity))
+                    .collect(Collectors.toList());
+
+            repository.saveAll(newEntities);
+        }
+    }
 }

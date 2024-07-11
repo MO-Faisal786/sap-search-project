@@ -47,6 +47,6 @@ public class Mbrsh {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mbrshCode, mbrshValue);
+        return Objects.hash(mbrshCode);
     }
 }
